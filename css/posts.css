@@ -1,0 +1,16 @@
+.post-header h1{
+    text-align: center;
+}
+.post-header p{
+    text-align: center;
+}
+.post{
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-bottom: 150px;
+}
+.wrap-text {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }

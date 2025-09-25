@@ -1,0 +1,47 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+    color: wheat;
+    
+  }
+  .hor-nav {
+    list-style-type: none;
+    overflow: hidden;
+}
+.hor-nav li{
+    float: left;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 20px;
+}
+.hor nav li a {
+  color: blue;
+    text-decoration: none;
+    display: block;
+    margin: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
+  .hor-nav li a:hover {
+      background-color: aqua;
+  }
+  .hor-nav li a:visited {
+      color: blue;
+  }
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    margin-top: 100px;
+    background-color: black;
+    text-align: center;
+     }
+  p {
+    margin: 20px;
+  }
+  html,body{
+    height: 100%;
+    background-color: black;
+  }
+  
+ 

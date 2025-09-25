@@ -49,13 +49,15 @@
 
 .orion-container {
     display: flex;
-    align-items: center; /* This vertically aligns items in the middle */
-    gap: 10px; /* Adds some space between the image and text */
+    align-items: center; 
+    gap: 10px; 
+    width: fit-content; /* Makes the container only as wide as its content */
+    margin: 20px auto; 
 }
 
 /* You might also want to style your image and h1 */
 .orion-container img {
-    height: 50; /* Adjust as needed */
+    height: 10; /* Adjust as needed */
     width: auto;
 }
 

@@ -16,7 +16,7 @@
   
     text-decoration: none;
     display: block;
-    margin: 20px;
+    margin: 10px;
     color:blue;
     font-family: 'Courier New', Courier, monospace;
     
@@ -51,14 +51,16 @@
     display: flex;
     align-items: center; 
     gap: 10px; 
-    width: fit-content; /* Makes the container only as wide as its content */
-    margin: 20px auto; 
+    width: fit-content; 
+    margin-top: 20px;
+    margin: 10px auto; 
 }
 
 /* You might also want to style your image and h1 */
 .orion-container img {
     height: 10; /* Adjust as needed */
     width: auto;
+    margin-top: 10px;
 }
 
 .orion-container h1 {
@@ -66,6 +68,17 @@
     font-family: 'Courier New', Courier, monospace;
     margin: 10px; margin-top: 20px; text-align: center; color: antiquewhite;
 }
+
+.content{
+  
+}
+
+.content p{
+  margin: 20px;
+  color: wheat;
+}
+
+
 
 
   

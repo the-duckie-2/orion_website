@@ -13,10 +13,11 @@
     margin: 20px;
 }
 .hor nav li a {
-  color: blue;
+  
     text-decoration: none;
     display: block;
     margin: 20px;
+    color:blue;
     font-family: 'Courier New', Courier, monospace;
     
 }

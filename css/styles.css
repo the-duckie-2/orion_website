@@ -44,5 +44,71 @@
     height: 100%;
     background-color: black;
   }
+  .orion-container {
+    display: flex;
+    align-items: center; /* This vertically aligns items in the middle */
+    gap: 10px; /* Adds some space between the image and text */
+}
+
+/* You might also want to style your image and h1 */
+.orion-container img {
+    height: 50px; /* Adjust as needed */
+    width: auto;
+}
+
+.orion-container h1 {
+    margin: 0; /* Remove default margin from h1 */
+}
+.orion-container {
+    display: flex;
+    align-items: center; /* This vertically aligns items in the middle */
+    gap: 10px; /* Adds some space between the image and text */
+}
+
+/* You might also want to style your image and h1 */
+.orion-container img {
+    height: 50px; /* Adjust as needed */
+    width: auto;
+}
+
+.orion-container h1 {
+    margin: 0; /* Remove default margin from h1 */
+}
+
+.orion-container {
+    display: flex;
+    align-items: center; /* This vertically aligns items in the middle */
+    gap: 10px; /* Adds some space between the image and text */
+}
+
+/* You might also want to style your image and h1 */
+.orion-container img {
+    height: 50px; /* Adjust as needed */
+    width: auto;
+}
+
+.orion-container h1 {
+    margin: 0; /* Remove default margin from h1 */
+}
+
+.orion-container {
+    display: flex;
+    align-items: center; /* This vertically aligns items in the middle */
+    gap: 10px; /* Adds some space between the image and text */
+}
+
+/* You might also want to style your image and h1 */
+.orion-container img {
+    height: 50; /* Adjust as needed */
+    width: auto;
+}
+
+.orion-container h1 {
+    
+    font-family: 'Courier New', Courier, monospace;
+    margin: 10px; margin-top: 20px; text-align: center; color: antiquewhite;
+}
+
+
   
  

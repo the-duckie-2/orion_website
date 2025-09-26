@@ -1,28 +1,64 @@
-* {
-    font-family: 'Courier New', Courier, monospace;
-    color: wheat;
-    
-  }
-  @font-face {
-  font-family: 'IBM_VGA'; /* You can name this whatever you want */
-  src: url('/fonts/PxPlus_IBM_VGA_8x16.ttf') format('truetype'); /* The path to your font file */
-  font-weight: normal;
-  font-style: normal;
-}
-  .hor-nav {
+:root {
+            --background: #000000;
+            --text-color: #0d6b26;
+            --accent-color: #BEBEBE;
+            --disabled-color: #555;
+            --border-color: beige;
+        }
+
+        /* Core Layout: Make body a flex container that fills the viewport */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent the whole page from scrolling */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Header & Footer: Make them non-growing */
+        .header, .footer {
+            flex-shrink: 0;
+            text-align: center ;
+        }
+        
+        .header-content {
+            display: inline-flex;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            justify-content: center;
+
+        }
+
+        .header-content h1 {
+            margin: 0;
+        }
+
+          .hor-nav {
     list-style-type: none;
-    overflow: hidden;
+    display: flex;
+            gap: 20px;
+            padding: 0 20px;
+            margin: 0;
 }
 .hor-nav li{
     float: left;
-    font-family: 'Courier New', Courier, monospace;
     margin: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    
 }
 .hor nav li a {
   
     text-decoration: none;
     display: block;
-    margin: 10px;
+    margin-left: 10px;
     color:blue;
     font-family: 'Courier New', Courier, monospace;
     
@@ -33,56 +69,11 @@
   .hor-nav li a:visited {
       color: blue;
   }
-  .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    z-index: 1;
-    margin-top: 100px;
-    background-color: black;
-    text-align: center;
-     }
-  p {
-    margin: 20px;
-  }
-  html,body{
-    height: 100%;
-    background-color: black;
-  }
-  
 
-
-.orion-container {
-    display: flex;
-    align-items: center; 
-    gap: 10px; 
-    width: fit-content; 
-    margin-top: 20px;
-    margin: 10px auto; 
-}
-
-/* You might also want to style your image and h1 */
-.orion-container img {
-    height: 10; /* Adjust as needed */
-    width: auto;
-    margin-top: 10px;
-}
-
-.orion-container h1 {
-    
-    font-family: 'Courier New', Courier, monospace;
-    margin: 10px; margin-top: 20px; text-align: center; color: antiquewhite;
-}
-
-.content{
-  
-}
-
-.content p{
-  margin: 20px;
-  color: wheat;
-}
+        hr {
+            border: solid 3px var(--border-color);
+            margin: 20px;
+        }
 
 
 

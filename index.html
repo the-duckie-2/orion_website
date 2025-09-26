@@ -4,42 +4,419 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orion.</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
-         .blinking-cursor {
-  animation: blink 1s step-end infinite;
-}
+        :root {
+            --background: #000000;
+            --text-color: #0d6b26;
+            --accent-color: #BEBEBE;
+            --disabled-color: #555;
+            --border-color: beige;
+        }
 
-@keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+        /* Core Layout: Make body a flex container that fills the viewport */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent the whole page from scrolling */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Header & Footer: Make them non-growing */
+        .header, .footer {
+            flex-shrink: 0;
+            text-align: center ;
+        }
+        
+        .header-content {
+            display: inline-flex;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            justify-content: center;
+
+        }
+
+        .header-content h1 {
+            margin: 0;
+        }
+
+          .hor-nav {
+    list-style-type: none;
+    display: flex;
+            gap: 20px;
+            padding: 0 20px;
+            margin: 0;
 }
+.hor-nav li{
+    float: left;
+    margin: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
+.hor nav li a {
+  
+    text-decoration: none;
+    display: block;
+    margin-left: 10px;
+    color:blue;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
+  .hor-nav li a:hover {
+      background-color: aqua;
+  }
+  .hor-nav li a:visited {
+      color: blue;
+  }
+
+        hr {
+            border: solid 3px var(--border-color);
+            margin: 20px;
+        }
+
+        /* Terminal Wrapper: This is the key. It grows and scrolls internally. */
+        .terminal-wrapper {
+            flex-grow: 1; /* Allow this container to fill available space */
+            overflow-y: auto; /* Enable vertical scrolling ONLY for this container */
+            padding: 0 20px;
+            max-width: 800px;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .terminal-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .terminal-wrapper {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Terminal and text styling (mostly unchanged) */
+        #terminal {
+            font-size: 1.4rem;
+        }
+
+        .line {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .prompt-symbol {
+            margin-right: 0.5em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.7em;
+            height: 1.4em;
+            background-color: var(--text-color);
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: var(--text-color); }
+        }
+
+        .output {
+            color: var(--accent-color);
+        }
+
+        .command-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .command {
+            color: var(--accent-color);
+            background: none;
+            border: 1px solid var(--accent-color);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .command:hover:not(:disabled) {
+            background-color: rgba(190, 190, 190, 0.2);
+        }
+
+        .command:disabled {
+            color: var(--disabled-color);
+            border-color: var(--disabled-color);
+            cursor: not-allowed;
+        }
+
+        /* Footer styling */
+        .footer pre {
+            text-align: center;
+            margin: 0.5em 0;
+        }
+
+        /* Hidden input for capturing keyboard strokes */
+        .hidden-input {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
     </style>
 </head>
 
 <body>
-    <div class="orion-container">
-    <img src="assets/orion.png" alt="Orion Constellation" height="100">
-    <h1>Orion</h1>
-</div>
-    <div>
-        <ul class="hor-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>    
+    <div class="header">
+        <div class="header-content">
+            <img src="assets/orion.png" alt="Orion Constellation" height="100">
+            <h1 style="color: beige;">Orion</h1>
+        </div>
+        <nav>
+            <ul class="hor-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+        <hr>
     </div>
-    <hr style="border:solid 3px beige; margin: 20px;">
-    <div class="content">
-            <p style="color: #0d6b26; margin-top: 60px; font-size: 30px; margin: 20px; font-family: 'Courier New', Courier, monospace;"><i style="color: #0d6b26;">$</i>whatis Orion<span class="blinking-cursor" style="color: #0d6b26; font-size: 30px;">|</span></p>
-    </div>
+
+    <main class="terminal-wrapper" id="terminal-wrapper">
+        <div id="terminal"></div>
+    </main>
+
     <div class="footer">
-        <hr style="border: solid 3px beige; margin: 20px;">
-        <pre style="text-align: center;">2025   Orion Inc.</pre>
-        <pre style="text-align: center;"><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a>  </pre>
+        <hr>
+        <pre>2025    Orion Inc.</pre>
+        <pre><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a></pre>
     </div>
+
+    <input type="text" class="hidden-input" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalWrapper = document.getElementById('terminal-wrapper');
+            const terminal = document.getElementById('terminal');
+            const hiddenInput = document.getElementById('hidden-input');
+            const TYPING_SPEED = 50;
+            let isTyping = false;
+            let currentLine;
+            let currentInput = '';
+            let suggestionsContainer = null;
+            let usedCommands = new Set();
+
+            const commandContent = {
+                'about': `
+Orion Inc. is a pioneering force in the field of AI automation. 
+We build intelligent, multi-agent systems that orchestrate complex digital workflows, 
+allowing businesses to achieve unprecedented levels of efficiency and scale.`,
+                'features': `
+- Multi-agent AI orchestration platform.
+- Automates complex tasks and manages dependencies.
+- Executes dynamic, intelligent workflows.
+- Built for teams, scalable for enterprises.
+- Real-time monitoring and analytics.`,
+                'pricing': `
+We offer tailored solutions to fit your needs. Please contact our sales team for a custom quote.
+> mailto:sales@orion-org.net`,
+                'contact': `
+Get in touch with us:
+- General Inquiries: info@orion-org.net
+- Sales: sales@orion-org.net`,
+                'help': `Available commands: [about], [features], [pricing], [contact], [help], [clear]`
+            };
+
+            // ✅ NEW & IMPROVED: Scrolls the terminal-wrapper element, not the whole window.
+            function scrollToBottom() {
+                // This is simpler and more reliable for this layout.
+                terminalWrapper.scrollTop = terminalWrapper.scrollHeight;
+            }
+
+            function createLine(text = '', isPrompt = false) {
+                const line = document.createElement('div');
+                line.className = 'line';
+                if (isPrompt) {
+                    line.innerHTML = `<span class="prompt-symbol">$</span><span class="prompt-text"></span><span class="cursor"></span>`;
+                    line.querySelector('.prompt-text').textContent = text;
+                } else {
+                    line.textContent = text;
+                }
+                terminal.appendChild(line);
+                scrollToBottom();
+                return line;
+            }
+
+            function typeWriter(element, text, speed, callback) {
+                let i = 0;
+                element.textContent = '';
+                function typing() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        scrollToBottom(); // It's safe to scroll here with the new layout
+                        setTimeout(typing, speed);
+                    } else if (callback) {
+                        const cursor = element.parentElement.querySelector('.cursor');
+                        if (cursor) cursor.remove();
+                        callback();
+                    }
+                }
+                typing();
+            }
+
+            function typeMultiLine(lines, onComplete) {
+                let lineIndex = 0;
+                function nextLine() {
+                    if (lineIndex < lines.length) {
+                        const line = createLine();
+                        line.classList.add('output');
+                        typeWriter(line, lines[lineIndex], TYPING_SPEED / 2, () => {
+                            lineIndex++;
+                            setTimeout(nextLine, 50);
+                        });
+                    } else if (onComplete) {
+                        onComplete();
+                    }
+                }
+                nextLine();
+            }
+
+            function processCommand(command, onComplete) {
+                const cmdLower = command.toLowerCase();
+                if (cmdLower === 'clear') {
+                    terminal.innerHTML = '';
+                    usedCommands.clear();
+                    start();
+                    return;
+                }
+                const outputText = commandContent[cmdLower] || `Command not found: ${command}. Type 'help' for a list of commands.`;
+                const outputLines = outputText.trim().split('\n');
+                typeMultiLine(outputLines, onComplete);
+            }
+
+            function executeCommand(command) {
+                const commandTrimmed = command.trim();
+                if (isTyping || !commandTrimmed) return;
+
+                const cmdLower = commandTrimmed.toLowerCase();
+                isTyping = true;
+
+                if (suggestionsContainer) {
+                    const helpText = document.querySelector('.suggestions-help-text');
+                    if (helpText) helpText.remove();
+                    suggestionsContainer.remove();
+                    suggestionsContainer = null;
+                }
+
+                const promptText = currentLine.querySelector('.prompt-text');
+                promptText.textContent = commandTrimmed;
+                currentLine.querySelector('.cursor')?.remove();
+
+                if (usedCommands.has(cmdLower)) {
+                    const errorLine = createLine(`> Command already used: ${commandTrimmed}`);
+                    errorLine.classList.add('output');
+                    setTimeout(() => {
+                        isTyping = false;
+                        newPrompt();
+                    }, 100);
+                    return;
+                }
+
+                if (cmdLower !== 'clear' && cmdLower !== 'help') {
+                    usedCommands.add(cmdLower);
+                }
+
+                processCommand(commandTrimmed, () => {
+                    displaySuggestions();
+                    isTyping = false;
+                    newPrompt();
+                });
+            }
+
+            function newPrompt() {
+                if (isTyping) return;
+                currentInput = '';
+                hiddenInput.value = '';
+                currentLine = createLine('', true);
+                hiddenInput.focus();
+            }
+
+            function displaySuggestions() {
+                suggestionsContainer = document.createElement('div');
+                suggestionsContainer.className = 'command-list';
+                const commands = ['about', 'features', 'pricing', 'contact'];
+                let buttonsHTML = '';
+                commands.forEach(cmd => {
+                    const isDisabled = usedCommands.has(cmd);
+                    buttonsHTML += `<button class="command" data-cmd="${cmd}" ${isDisabled ? 'disabled' : ''}>${cmd}</button>`;
+                });
+                suggestionsContainer.innerHTML = buttonsHTML;
+                const helpText = createLine("Type a command or click an option below:");
+                helpText.classList.add('output', 'suggestions-help-text');
+                terminal.appendChild(suggestionsContainer);
+                scrollToBottom();
+
+                suggestionsContainer.querySelectorAll('.command').forEach(button => {
+                    button.addEventListener('click', () => {
+                        if (button.disabled) return;
+                        const cmd = button.getAttribute('data-cmd');
+                        executeCommand(cmd);
+                    });
+                });
+            }
+
+            document.body.addEventListener('click', (e) => {
+                // Focus the input only if not clicking a link or button
+                if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
+                    hiddenInput.focus();
+                }
+            });
+
+            hiddenInput.addEventListener('input', (e) => {
+                if (isTyping || !currentLine) return;
+                currentInput = e.target.value;
+                currentLine.querySelector('.prompt-text').textContent = currentInput;
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (isTyping || !currentLine) return;
+                if (e.key === 'Enter') {
+                    executeCommand(currentInput.trim());
+                }
+            });
+
+            function start() {
+                isTyping = true;
+                terminal.innerHTML = '';
+                const initialPrompt = createLine('', true);
+                const promptTextEl = initialPrompt.querySelector('.prompt-text');
+
+                typeWriter(promptTextEl, 'whatis Orion', TYPING_SPEED, () => {
+                    const introText = `
+Orion: Multi-agent AI orchestration platform.
+Automates tasks, manages dependencies, executes workflows.
+Built for teams, scaled for enterprises.`;
+                    const introLines = introText.trim().split('\n');
+
+                    typeMultiLine(introLines, () => {
+                        displaySuggestions();
+                        isTyping = false;
+                        newPrompt();
+                    });
+                });
+            }
+
+            start();
+        });
+    </script>
 </body>
 </html>

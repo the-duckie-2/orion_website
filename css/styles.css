@@ -3,6 +3,12 @@
     color: wheat;
     
   }
+  @font-face {
+  font-family: 'IBM_VGA'; /* You can name this whatever you want */
+  src: url('/fonts/PxPlus_IBM_VGA_8x16.ttf') format('truetype'); /* The path to your font file */
+  font-weight: normal;
+  font-style: normal;
+}
   .hor-nav {
     list-style-type: none;
     overflow: hidden;

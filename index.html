@@ -53,8 +53,9 @@
     list-style-type: none;
     display: flex;
             gap: 20px;
-            padding: 0 20px;
-            margin: 0;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 1850px;
 }
 .hor-nav li{
     float: left;
@@ -63,7 +64,7 @@
     
 }
 .hor nav li a {
-  
+ 
     text-decoration: none;
     display: block;
     margin-left: 10px;
@@ -185,6 +186,8 @@
             <ul class="hor-nav">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li style="margin-left: auto;"><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <hr>
@@ -196,7 +199,8 @@
 
     <div class="footer">
         <hr>
-        <pre>2025    Orion Inc.</pre>
+        <pre>[2025-09-29 01:54:49] Orion Inc. v0.1 — all systems operational
+</pre>
         <pre><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a></pre>
     </div>
 
@@ -207,11 +211,11 @@
             const terminalWrapper = document.getElementById('terminal-wrapper');
             const terminal = document.getElementById('terminal');
             const hiddenInput = document.getElementById('hidden-input');
-            const TYPING_SPEED = 50;
+            const TYPING_SPEED = 10;
             let isTyping = false;
             let currentLine;
             let currentInput = '';
-            let suggestionsContainer = null;
+            // REMOVED: suggestionsContainer variable is no longer needed at this scope
             let usedCommands = new Set();
 
             const commandContent = {
@@ -235,9 +239,7 @@ Get in touch with us:
                 'help': `Available commands: [about], [features], [pricing], [contact], [help], [clear]`
             };
 
-            // ✅ NEW & IMPROVED: Scrolls the terminal-wrapper element, not the whole window.
             function scrollToBottom() {
-                // This is simpler and more reliable for this layout.
                 terminalWrapper.scrollTop = terminalWrapper.scrollHeight;
             }
 
@@ -262,7 +264,7 @@ Get in touch with us:
                     if (i < text.length) {
                         element.textContent += text.charAt(i);
                         i++;
-                        scrollToBottom(); // It's safe to scroll here with the new layout
+                        scrollToBottom();
                         setTimeout(typing, speed);
                     } else if (callback) {
                         const cursor = element.parentElement.querySelector('.cursor');
@@ -303,19 +305,21 @@ Get in touch with us:
                 typeMultiLine(outputLines, onComplete);
             }
 
+            // NEW: Helper function to robustly remove old suggestions
+            function removeSuggestions() {
+                const oldSuggestions = terminal.querySelectorAll('.command-list, .suggestions-help-text');
+                oldSuggestions.forEach(el => el.remove());
+            }
+
             function executeCommand(command) {
                 const commandTrimmed = command.trim();
                 if (isTyping || !commandTrimmed) return;
 
                 const cmdLower = commandTrimmed.toLowerCase();
                 isTyping = true;
-
-                if (suggestionsContainer) {
-                    const helpText = document.querySelector('.suggestions-help-text');
-                    if (helpText) helpText.remove();
-                    suggestionsContainer.remove();
-                    suggestionsContainer = null;
-                }
+                
+                // NEW: Use the helper function to clean up UI before processing
+                removeSuggestions();
 
                 const promptText = currentLine.querySelector('.prompt-text');
                 promptText.textContent = commandTrimmed;
@@ -351,7 +355,7 @@ Get in touch with us:
             }
 
             function displaySuggestions() {
-                suggestionsContainer = document.createElement('div');
+                const suggestionsContainer = document.createElement('div');
                 suggestionsContainer.className = 'command-list';
                 const commands = ['about', 'features', 'pricing', 'contact'];
                 let buttonsHTML = '';
@@ -364,18 +368,24 @@ Get in touch with us:
                 helpText.classList.add('output', 'suggestions-help-text');
                 terminal.appendChild(suggestionsContainer);
                 scrollToBottom();
+                
+                rebindSuggestionListeners();
+            }
 
-                suggestionsContainer.querySelectorAll('.command').forEach(button => {
-                    button.addEventListener('click', () => {
-                        if (button.disabled) return;
-                        const cmd = button.getAttribute('data-cmd');
-                        executeCommand(cmd);
+            function rebindSuggestionListeners() {
+                const commandLists = terminal.querySelectorAll('.command-list');
+                commandLists.forEach(list => {
+                    list.querySelectorAll('.command').forEach(button => {
+                        button.addEventListener('click', () => {
+                            if (button.disabled) return;
+                            const cmd = button.getAttribute('data-cmd');
+                            executeCommand(cmd);
+                        });
                     });
                 });
             }
 
             document.body.addEventListener('click', (e) => {
-                // Focus the input only if not clicking a link or button
                 if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
                     hiddenInput.focus();
                 }
@@ -415,7 +425,51 @@ Built for teams, scaled for enterprises.`;
                 });
             }
 
-            start();
+            // NEW: Heavily modified saveState function
+            function saveState() {
+                // Create a temporary clone of the terminal to manipulate
+                const terminalClone = terminal.cloneNode(true);
+                
+                // Find and remove the active prompt and all suggestion elements from the clone
+                const activePrompt = terminalClone.querySelector('.line:last-child .cursor')?.closest('.line');
+                if (activePrompt) activePrompt.remove();
+                
+                const suggestions = terminalClone.querySelectorAll('.command-list, .suggestions-help-text');
+                suggestions.forEach(el => el.remove());
+
+                // Now, get the "clean" HTML from the clone
+                const terminalHTML = terminalClone.innerHTML;
+                const usedCommandsJSON = JSON.stringify(Array.from(usedCommands));
+                
+                sessionStorage.setItem('terminalHTML', terminalHTML);
+                sessionStorage.setItem('usedCommandsJSON', usedCommandsJSON);
+            }
+
+            function loadState() {
+                const savedHTML = sessionStorage.getItem('terminalHTML');
+                const savedCommandsJSON = sessionStorage.getItem('usedCommandsJSON');
+
+                if (savedHTML && savedCommandsJSON) {
+                    terminal.innerHTML = savedHTML;
+                    const savedCommandsArray = JSON.parse(savedCommandsJSON);
+                    usedCommands = new Set(savedCommandsArray);
+                    
+                    // After restoring clean history, display a fresh set of suggestions
+                    displaySuggestions();
+                    
+                    isTyping = false; 
+                    newPrompt();
+                    scrollToBottom();
+                    return true;
+                }
+                return false;
+            }
+            
+            window.addEventListener('beforeunload', saveState);
+
+            if (!loadState()) {
+                start();
+            }
         });
     </script>
 </body>

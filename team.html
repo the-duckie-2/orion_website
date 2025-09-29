@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion. - Team</title>
+    
+    <style>
+        :root {
+            --background: #000000;
+            --text-color: #0d6b26;
+            --accent-color: #BEBEBE;
+            --disabled-color: #555;
+            --border-color: beige;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .header, .footer {
+            flex-shrink: 0;
+            text-align: center ;
+            
+        }
+        
+        .header-content {
+            display: inline-flex;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .header-content h1 {
+            margin: 0;
+        }
+        .footer pre {
+            text-align: center;
+            margin: 0.5em 0;
+        }
+
+        /* EXACT CSS FROM YOUR INDEX.HTML FOR NAVBAR */
+        .hor-nav {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 1850px; /* Using 800px to align with terminal content */
+        }
+        .hor-nav li{
+            float: left;
+            margin: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .hor-nav li a {
+            text-decoration: underline;
+            display: block;
+            margin-left: 10px;
+            color:blue;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .hor-nav li a:hover {
+            background-color: aqua;
+        }
+        .hor-nav li a:visited {
+            color: blue;
+        }
+        
+        hr {
+            border: solid 3px var(--border-color);
+            margin: 20px;
+        }
+
+        /* Using same wrapper class as index.html but renamed for clarity */
+        .content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 20px;
+            max-width: 2000px;
+            margin: 0 auto; /* This centers the content block */
+            margin-left: 0%;
+        }
+        .content-wrapper::-webkit-scrollbar { display: none; }
+        .content-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #content-area {
+            font-size: 1.4rem;
+            align-self: left;
+            
+        }
+
+        .line {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 1.5em;
+            align-content: left; /* Force all lines to be left-aligned */
+            margin-left: 0px;
+        }
+
+        .profile-container {
+            /* This container will be centered by the wrapper's margin:auto */
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-top: 40px;
+            color: var(--accent-color);
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            text-align: left;
+            margin-left: 400px;
+            margin-right: 200px;
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        
+        .profile-bio p {
+            margin: 0 0 20px 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .profile-links a {
+            margin-right: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent-color);
+        }
+
+        .prompt-symbol { margin-right: 0.5em; }
+        .cursor {
+            display: inline-block;
+            width: 0.7em;
+            height: 1.4em;
+            background-color: var(--text-color);
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: var(--text-color); }
+        }
+        .output { 
+            color: var(--accent-color); 
+            text-align: left; /* Ensure output lines are also left-aligned */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-content">
+            <img src="assets/orion.png" alt="Orion Constellation" height="100">
+            <h1 style="color: beige;">Orion</h1>
+        </div>
+        <nav>
+            <ul class="hor-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li style="margin-left: auto;"><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </div>
+
+    <main class="content-wrapper" id="content-wrapper">
+        <div id="content-area"></div>
+        <div id="profile-details-container" class="profile-container">
+            <img src="[YOUR HEADSHOT IMAGE PATH]" alt="Daksh, Founder & CEO" class="profile-pic">
+            <div class="profile-bio">
+                <p>[YOUR BIO TEXT GOES HERE. Write a concise paragraph about your background, expertise in AI, and your vision for starting Orion.]</p>
+                <div class="profile-links">
+                    <a href="[YOUR LINKEDIN URL]" target="_blank">LinkedIn</a>
+                    <a href="[YOUR GITHUB URL]" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="footer">
+        <hr>
+        <pre>[2025-09-29 04:13:00] Orion Inc. v0.1 — all systems operational
+</pre>
+        <pre><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a></pre>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentWrapper = document.getElementById('content-wrapper');
+            const contentArea = document.getElementById('content-area');
+            const profileContainer = document.getElementById('profile-details-container');
+            const TYPING_SPEED = 25;
+
+            function scrollToBottom() {
+                contentWrapper.scrollTop = contentWrapper.scrollHeight;
+            }
+
+            function createLine() {
+                const line = document.createElement('div');
+                line.className = 'line';
+                contentArea.appendChild(line);
+                scrollToBottom();
+                return line;
+            }
+            
+            function typeWriter(element, text, speed, callback) {
+                let i = 0;
+                let originalText = text;
+                let symbolSpan = '';
+
+                if (text.startsWith('$ ') || text.startsWith('> ')) {
+                    symbolSpan = `<span class="prompt-symbol">${text.substring(0, 1)}</span>`;
+                    text = text.substring(2);
+                }
+                
+                element.innerHTML = `${symbolSpan}<span class="prompt-text"></span>`;
+                const targetEl = element.querySelector('.prompt-text');
+                const cursor = document.createElement('span');
+                if (symbolSpan) { // Only add cursor to command lines
+                    cursor.className = 'cursor';
+                    element.appendChild(cursor);
+                }
+
+                function typing() {
+                    if (i < text.length) {
+                        targetEl.textContent += text.charAt(i);
+                        i++;
+                        scrollToBottom();
+                        setTimeout(typing, speed);
+                    } else if (callback) {
+                        if (cursor) cursor.remove();
+                        callback();
+                    }
+                }
+                typing();
+            }
+            
+            function typeMultiLine(lines, onComplete) {
+                let lineIndex = 0;
+                function nextLine() {
+                    if (lineIndex < lines.length) {
+                        const lineContent = lines[lineIndex];
+
+                        if (lineContent.startsWith('PAUSE_')) {
+                            const delay = parseInt(lineContent.split('_')[1], 10);
+                            lineIndex++;
+                            setTimeout(nextLine, delay);
+                            return;
+                        }
+                        
+                        const line = createLine();
+                        if (!lineContent.startsWith('$ ') && !lineContent.startsWith('> ')) {
+                            line.classList.add('output');
+                        }
+                        
+                        typeWriter(line, lineContent, TYPING_SPEED, () => {
+                            lineIndex++;
+                            setTimeout(nextLine, 150);
+                        });
+                    } else if (onComplete) {
+                        onComplete();
+                    }
+                }
+                nextLine();
+            }
+
+            // FIXED: Reverted to text-based block, corrected order, increased delay
+            const pageContent = [
+                '$ cat /etc/root/users',
+                '> Accessing User Profiles...',
+                'PAUSE_1200',
+                ' ',
+                '----------------------------------',
+                'UID         : 0 (root)',
+                'USERNAME    : daksh',
+                'GROUP       : founders',
+                'HOME        : /home/daksh',
+                'SHELL       : /bin/orion',
+                '----------------------------------',
+                ' ',
+                '> Profile loaded. Displaying details.'
+            ];
+
+            typeMultiLine(pageContent, () => {
+                profileContainer.style.opacity = '1';
+                scrollToBottom();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion. - Team</title>
+    <title>Orion. - Connect</title>
     
     <style>
         :root {
@@ -32,7 +32,6 @@
         .header, .footer {
             flex-shrink: 0;
             text-align: center ;
-            
         }
         
         .header-content {
@@ -51,14 +50,13 @@
             margin: 0.5em 0;
         }
 
-        /* EXACT CSS FROM YOUR INDEX.HTML FOR NAVBAR */
         .hor-nav {
             list-style-type: none;
             display: flex;
             gap: 20px;
             padding: 0;
             margin: 0 auto;
-            max-width: 1850px; /* Using 800px to align with terminal content */
+            max-width: 1850px;
         }
         .hor-nav li{
             float: left;
@@ -84,13 +82,12 @@
             margin: 20px;
         }
 
-        /* Using same wrapper class as index.html but renamed for clarity */
         .content-wrapper {
             flex-grow: 1;
             overflow-y: auto;
             padding: 0 20px;
             max-width: 2000px;
-            margin: 0 auto; /* This centers the content block */
+            margin: 0 auto;
             margin-left: 0%;
         }
         .content-wrapper::-webkit-scrollbar { display: none; }
@@ -98,51 +95,34 @@
         
         #content-area {
             font-size: 1.4rem;
-            align-self: left;
-            
         }
 
         .line {
             white-space: pre-wrap;
             word-wrap: break-word;
             min-height: 1.5em;
-            align-content: left; /* Force all lines to be left-aligned */
-            margin-left: 0px;
+            text-align: left;
+        }
+        
+        .command-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
         }
 
-        .profile-container {
-            /* This container will be centered by the wrapper's margin:auto */
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            margin-top: 40px;
+        .command {
             color: var(--accent-color);
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            text-align: left;
-            margin-left: 400px;
-            margin-right: 200px;
+            background: none;
+            border: 1px solid var(--accent-color);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: background-color 0.2s;
         }
-        
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid var(--border-color);
-            flex-shrink: 0;
-        }
-        
-        .profile-bio p {
-            margin: 0 0 20px 0;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-        
-        .profile-links a {
-            margin-right: 20px;
-            color: var(--accent-color);
-            text-decoration: none;
-            border-bottom: 1px dashed var(--accent-color);
+        .command:hover {
+            background-color: rgba(190, 190, 190, 0.2);
         }
 
         .prompt-symbol { margin-right: 0.5em; }
@@ -158,9 +138,10 @@
             from, to { background-color: transparent; }
             50% { background-color: var(--text-color); }
         }
-        .output { 
-            color: var(--accent-color); 
-            text-align: left; /* Ensure output lines are also left-aligned */
+        .output { color: var(--accent-color); }
+        .final-link a {
+            color: var(--border-color);
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -184,21 +165,11 @@
 
     <main class="content-wrapper" id="content-wrapper">
         <div id="content-area"></div>
-        <div id="profile-details-container" class="profile-container">
-            <img src="[YOUR HEADSHOT IMAGE PATH]" alt="Daksh, Founder & CEO" class="profile-pic">
-            <div class="profile-bio">
-                <p>Daksh Shettar is a Physics major at IIT Kanpur, interested in Machine Learning, Swimming and Quizzing.</p>
-                <div class="profile-links">
-                    <!--<a href="[YOUR LINKEDIN URL]" target="_blank">LinkedIn</a>
-                    <a href="[YOUR GITHUB URL]" target="_blank">GitHub</a>-->
-                </div>
-            </div>
-        </div>
     </main>
 
     <div class="footer">
         <hr>
-        <pre>[2025-09-29 04:13:00] Orion Inc. v0.1 — all systems operational
+        <pre>[2025-09-29 06:29:14] Orion Inc. v0.1 — all systems operational
 </pre>
         <pre><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a></pre>
     </div>
@@ -207,8 +178,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const contentWrapper = document.getElementById('content-wrapper');
             const contentArea = document.getElementById('content-area');
-            const profileContainer = document.getElementById('profile-details-container');
-            const TYPING_SPEED = 25;
+            const TYPING_SPEED = 20;
+            let isTyping = false;
 
             function scrollToBottom() {
                 contentWrapper.scrollTop = contentWrapper.scrollHeight;
@@ -224,25 +195,25 @@
             
             function typeWriter(element, text, speed, callback) {
                 let i = 0;
-                let originalText = text;
                 let symbolSpan = '';
+                let textContent = text;
 
                 if (text.startsWith('$ ') || text.startsWith('> ')) {
                     symbolSpan = `<span class="prompt-symbol">${text.substring(0, 1)}</span>`;
-                    text = text.substring(2);
+                    textContent = text.substring(2);
                 }
                 
                 element.innerHTML = `${symbolSpan}<span class="prompt-text"></span>`;
                 const targetEl = element.querySelector('.prompt-text');
                 const cursor = document.createElement('span');
-                if (symbolSpan) { // Only add cursor to command lines
+                if (symbolSpan) {
                     cursor.className = 'cursor';
                     element.appendChild(cursor);
                 }
 
                 function typing() {
-                    if (i < text.length) {
-                        targetEl.textContent += text.charAt(i);
+                    if (i < textContent.length) {
+                        targetEl.textContent += textContent.charAt(i);
                         i++;
                         scrollToBottom();
                         setTimeout(typing, speed);
@@ -256,6 +227,7 @@
             
             function typeMultiLine(lines, onComplete) {
                 let lineIndex = 0;
+                isTyping = true;
                 function nextLine() {
                     if (lineIndex < lines.length) {
                         const lineContent = lines[lineIndex];
@@ -269,40 +241,127 @@
                         
                         const line = createLine();
                         if (!lineContent.startsWith('$ ') && !lineContent.startsWith('> ')) {
-                            line.classList.add('output');
+                             line.classList.add('output');
                         }
                         
                         typeWriter(line, lineContent, TYPING_SPEED, () => {
                             lineIndex++;
-                            setTimeout(nextLine, 150);
+                            setTimeout(nextLine, 100);
                         });
                     } else if (onComplete) {
+                        isTyping = false;
                         onComplete();
                     }
                 }
                 nextLine();
             }
 
-            // FIXED: Reverted to text-based block, corrected order, increased delay
-            const pageContent = [
-                '$ cat /etc/root/users',
-                '> Accessing User Profiles...',
-                'PAUSE_1200',
-                ' ',
-                '----------------------------------',
-                'UID         : 0 (root)',
-                'USERNAME    : daksh',
-                'GROUP       : founders',
-                'HOME        : /home/daksh',
-                'SHELL       : /bin/orion',
-                '----------------------------------',
-                ' ',
-                '> Profile loaded. Displaying details.'
+            function displayChoices() {
+                const choiceContainer = document.createElement('div');
+                choiceContainer.className = 'command-list';
+
+                const choices = [
+                    { text: 'Pilot Program', type: 'pilot' },
+                    { text: 'Book a Demo', type: 'demo' },
+                    { text: 'General Inquiry', type: 'general' }
+                ];
+
+                choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.className = 'command';
+                    button.textContent = choice.text;
+                    button.onclick = () => handleChoice(choice.type, choiceContainer);
+                    choiceContainer.appendChild(button);
+                });
+
+                contentArea.appendChild(choiceContainer);
+                scrollToBottom();
+            }
+
+            function handleChoice(type, container) {
+                if (isTyping) return;
+                container.remove(); // Remove the choice buttons once one is clicked
+
+                let responseLines = [];
+                const email = 'daksh@orion-org.net';
+                
+                switch(type) {
+                    case 'pilot':
+                        const pilotSubject = 'Orion Pilot Program Inquiry';
+                        responseLines = [
+                            '> Routing to partnerships channel...',
+                            'PAUSE_1000',
+                            '> Generating secure mailto link...',
+                            'PAUSE_1000',
+                            `> Click here to open your email client: <a href="mailto:${email}?subject=${encodeURIComponent(pilotSubject)}">SEND MAIL</a>`
+                        ];
+                        break;
+                    case 'demo':
+                        const calendlyLink = '[YOUR CALENDLY LINK HERE]'; // <-- IMPORTANT: REPLACE THIS
+                        responseLines = [
+                            '> Accessing scheduling daemon...',
+                            'PAUSE_500',
+                            '> Found available slots. Opening calendar...',
+                            'PAUSE_1000',
+                            `> Click here to book a meeting: <a href="${calendlyLink}" target="_blank">SCHEDULE NOW</a>`
+                        ];
+                        break;
+                    case 'general':
+                        const generalSubject = 'General Inquiry about Orion';
+                        responseLines = [
+                            '> Routing to general channel...',
+                            'PAUSE_500',
+                            '> Generating secure mailto link...',
+                            'PAUSE_1000',
+                            `> Click here to open your email client: <a href="mailto:${email}?subject=${encodeURIComponent(generalSubject)}">SEND MAIL</a>`
+                        ];
+                        break;
+                }
+
+                // A special function to render the final line with a clickable link
+                let lineIndex = 0;
+                isTyping = true;
+                function nextResponseLine() {
+                    if (lineIndex < responseLines.length) {
+                        const lineContent = responseLines[lineIndex];
+                         if (lineContent.startsWith('PAUSE_')) {
+                            const delay = parseInt(lineContent.split('_')[1], 10);
+                            lineIndex++;
+                            setTimeout(nextResponseLine, delay);
+                            return;
+                        }
+                        const line = createLine();
+                        if (lineContent.includes("<a href")) {
+                             line.classList.add('final-link');
+                             line.innerHTML = lineContent;
+                             scrollToBottom();
+                             lineIndex++;
+                             setTimeout(nextResponseLine, 100);
+                        } else {
+                            typeWriter(line, lineContent, TYPING_SPEED, () => {
+                                lineIndex++;
+                                setTimeout(nextResponseLine, 100);
+                            });
+                        }
+                    } else {
+                        isTyping = false;
+                    }
+                }
+                nextResponseLine();
+            }
+            
+            const initialContent = [
+                '$ connect --secure sales.orion-org.net',
+                'PAUSE_1000',
+                'Pinging host... success.',
+                'Establishing secure handshake... complete.',
+                'PAUSE_1000',
+                '> Connection established. Please select inquiry type:'
             ];
 
-            typeMultiLine(pageContent, () => {
-                profileContainer.style.opacity = '1';
-                scrollToBottom();
+            typeMultiLine(initialContent, () => {
+                // When initial animation is done, show the choices
+                displayChoices();
             });
         });
     </script>

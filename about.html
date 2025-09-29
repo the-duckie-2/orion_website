@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion. - Team</title>
+    <title>Orion. - System</title>
     
     <style>
         :root {
@@ -32,7 +32,6 @@
         .header, .footer {
             flex-shrink: 0;
             text-align: center ;
-            
         }
         
         .header-content {
@@ -51,14 +50,13 @@
             margin: 0.5em 0;
         }
 
-        /* EXACT CSS FROM YOUR INDEX.HTML FOR NAVBAR */
         .hor-nav {
             list-style-type: none;
             display: flex;
             gap: 20px;
             padding: 0;
             margin: 0 auto;
-            max-width: 1850px; /* Using 800px to align with terminal content */
+            max-width: 1850px;
         }
         .hor-nav li{
             float: left;
@@ -84,13 +82,12 @@
             margin: 20px;
         }
 
-        /* Using same wrapper class as index.html but renamed for clarity */
         .content-wrapper {
             flex-grow: 1;
             overflow-y: auto;
             padding: 0 20px;
             max-width: 2000px;
-            margin: 0 auto; /* This centers the content block */
+            margin: 0 auto;
             margin-left: 0%;
         }
         .content-wrapper::-webkit-scrollbar { display: none; }
@@ -98,51 +95,23 @@
         
         #content-area {
             font-size: 1.4rem;
-            align-self: left;
-            
         }
 
         .line {
             white-space: pre-wrap;
             word-wrap: break-word;
             min-height: 1.5em;
-            align-content: left; /* Force all lines to be left-aligned */
-            margin-left: 0px;
-        }
-
-        .profile-container {
-            /* This container will be centered by the wrapper's margin:auto */
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            margin-top: 40px;
-            color: var(--accent-color);
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
             text-align: left;
-            margin-left: 400px;
-            margin-right: 200px;
         }
         
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid var(--border-color);
-            flex-shrink: 0;
+        .man-section-title {
+            color: var(--border-color);
+            font-weight: bold;
         }
         
-        .profile-bio p {
-            margin: 0 0 20px 0;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-        
-        .profile-links a {
-            margin-right: 20px;
+        .man-content {
             color: var(--accent-color);
-            text-decoration: none;
-            border-bottom: 1px dashed var(--accent-color);
+            padding-left: 2em;
         }
 
         .prompt-symbol { margin-right: 0.5em; }
@@ -158,10 +127,7 @@
             from, to { background-color: transparent; }
             50% { background-color: var(--text-color); }
         }
-        .output { 
-            color: var(--accent-color); 
-            text-align: left; /* Ensure output lines are also left-aligned */
-        }
+        .output { color: var(--accent-color); }
     </style>
 </head>
 
@@ -184,21 +150,11 @@
 
     <main class="content-wrapper" id="content-wrapper">
         <div id="content-area"></div>
-        <div id="profile-details-container" class="profile-container">
-            <img src="[YOUR HEADSHOT IMAGE PATH]" alt="Daksh, Founder & CEO" class="profile-pic">
-            <div class="profile-bio">
-                <p>Daksh Shettar is a Physics major at IIT Kanpur, interested in Machine Learning, Swimming and Quizzing.</p>
-                <div class="profile-links">
-                    <!--<a href="[YOUR LINKEDIN URL]" target="_blank">LinkedIn</a>
-                    <a href="[YOUR GITHUB URL]" target="_blank">GitHub</a>-->
-                </div>
-            </div>
-        </div>
     </main>
 
     <div class="footer">
         <hr>
-        <pre>[2025-09-29 04:13:00] Orion Inc. v0.1 — all systems operational
+        <pre>[2025-09-29 06:07:19] Orion Inc. v0.1 — all systems operational
 </pre>
         <pre><a href="mailto:daksh@orion-org.net" target="_blank"><img src="assets/gmail.png" height="20px"></a>   <a href="https://x.com/" target="_blank"><img src="assets/x.png" height="20px"></a></pre>
     </div>
@@ -207,8 +163,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const contentWrapper = document.getElementById('content-wrapper');
             const contentArea = document.getElementById('content-area');
-            const profileContainer = document.getElementById('profile-details-container');
-            const TYPING_SPEED = 25;
+            const TYPING_SPEED = 15;
 
             function scrollToBottom() {
                 contentWrapper.scrollTop = contentWrapper.scrollHeight;
@@ -224,7 +179,6 @@
             
             function typeWriter(element, text, speed, callback) {
                 let i = 0;
-                let originalText = text;
                 let symbolSpan = '';
 
                 if (text.startsWith('$ ') || text.startsWith('> ')) {
@@ -235,7 +189,7 @@
                 element.innerHTML = `${symbolSpan}<span class="prompt-text"></span>`;
                 const targetEl = element.querySelector('.prompt-text');
                 const cursor = document.createElement('span');
-                if (symbolSpan) { // Only add cursor to command lines
+                if (symbolSpan) {
                     cursor.className = 'cursor';
                     element.appendChild(cursor);
                 }
@@ -268,13 +222,18 @@
                         }
                         
                         const line = createLine();
-                        if (!lineContent.startsWith('$ ') && !lineContent.startsWith('> ')) {
-                            line.classList.add('output');
+                        // Add specific classes for man page styling
+                        if (['NAME', 'SYNOPSIS', 'DESCRIPTION', 'COMPONENTS', 'EXAMPLES'].includes(lineContent)) {
+                            line.classList.add('man-section-title');
+                        } else if (lineContent.startsWith(' ') && lineContent.length > 1) {
+                            line.classList.add('man-content');
+                        } else if (!lineContent.startsWith('$ ') && !lineContent.startsWith('> ')) {
+                             line.classList.add('output');
                         }
                         
                         typeWriter(line, lineContent, TYPING_SPEED, () => {
                             lineIndex++;
-                            setTimeout(nextLine, 150);
+                            setTimeout(nextLine, 100);
                         });
                     } else if (onComplete) {
                         onComplete();
@@ -282,26 +241,38 @@
                 }
                 nextLine();
             }
-
-            // FIXED: Reverted to text-based block, corrected order, increased delay
+            
             const pageContent = [
-                '$ cat /etc/root/users',
-                '> Accessing User Profiles...',
-                'PAUSE_1200',
-                ' ',
-                '----------------------------------',
-                'UID         : 0 (root)',
-                'USERNAME    : daksh',
-                'GROUP       : founders',
-                'HOME        : /home/daksh',
-                'SHELL       : /bin/orion',
-                '----------------------------------',
-                ' ',
-                '> Profile loaded. Displaying details.'
+                '> man orion',
+                'PAUSE_500',
+                'Fetching manual page for Orion v0.1...',
+                'PAUSE_1000',
+                '',
+                'NAME',
+                '     orion - A multi-agent AI orchestration platform.',
+                '',
+                'SYNOPSIS',
+                '     Automates complex digital workflows through a hierarchical, three-tier LLM architecture.',
+                '',
+                'DESCRIPTION',
+                '     Orion is a command-line and API-driven automation tool that translates high-level human objectives into executable action plans. It reduces manual effort, prevents configuration errors, and increases the efficiency of digital operations by delegating complex task sequences to a coordinated team of specialized AI agents.',
+                '',
+                'COMPONENTS',
+                '     [1] Dialogue Manager: Clarifies user intent and gathers necessary context.',
+                '     [2] Hierarchical Planner: Decomposes goals into a tree of executable sub-tasks.',
+                '     [3] Orchestrator & Executor: Assigns agents and tools to execute the plan.',
+                '',
+                '     (Agent Workflow)',
+                '        [User] ---> [1. Dialogue] ---> [2. Planner] ---> [3. Executor] ---> (System)',
+                '           ^               |                 |                  |                |',
+                '           |_______________|_________________|__________________|________________|',
+                '                           (Feedback & Recovery Loop)',
+                
+                
             ];
 
             typeMultiLine(pageContent, () => {
-                profileContainer.style.opacity = '1';
+                // Animation finished
                 scrollToBottom();
             });
         });

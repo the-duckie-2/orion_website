@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/// <reference types="vite/client" />
+import { useState, FormEvent } from 'react';
 import { useWaitlist } from '../context/WaitlistContext';
 
 export default function WaitlistModal() {
@@ -11,7 +12,7 @@ export default function WaitlistModal() {
 
   if (!isModalOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
